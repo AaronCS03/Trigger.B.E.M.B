@@ -229,7 +229,116 @@ CALL proc_auditar_empleados();
 
 
 
+<div style="font-family:'Times New Roman', serif; line-height:1.5;">
 
+<h2>Comprobación</h2>
 
+<h1>Explicación del Código SQL para la Base de Datos Trigger_BEMB</h1>
 
+<h2>1. Creación de la base de datos</h2>
+
+<pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'Trigger_BEMB')
+BEGIN
+    CREATE DATABASE Trigger_BEMB;
+END
+GO
+</pre>
+
+<div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
+
+<h2>3. Creación de la tabla <code>empleados</code></h2>
+
+<pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
+CREATE TABLE empleados (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre NVARCHAR(100) NOT NULL,
+    puesto NVARCHAR(100),
+    salario DECIMAL(10,2),
+    fecha_creacion DATETIME DEFAULT GETDATE()
+);
+GO
+</pre>
+
+<p>
+Tabla que almacena datos de empleados con un ID autoincremental, nombre, puesto, salario y fecha de creación.
+</p>
+
+</div>
+
+<div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
+
+<h2>4. Creación de la tabla <code>auditoria_empleados</code></h2>
+
+<pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
+CREATE TABLE auditoria_empleados (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    empleado_id INT NOT NULL,
+    accion NVARCHAR(20) NOT NULL,
+    fecha_accion DATETIME NOT NULL,
+    CONSTRAINT FK_Empleado_Auditoria FOREIGN KEY (empleado_id) REFERENCES empleados(id)
+);
+GO
+</pre>
+
+<p>
+Tabla que almacena los registros de auditoría de acciones realizadas sobre empleados, vinculando cada registro con un empleado específico mediante una clave foránea.
+</p>
+
+</div>
+
+<div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
+
+<h2>5. Creación del trigger <code>trg_after_insert_empleado</code></h2>
+
+<pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
+CREATE TRIGGER trg_after_insert_empleado
+ON empleados
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO auditoria_empleados (empleado_id, accion, fecha_accion)
+    SELECT inserted.id, 'INSERT', GETDATE()
+    FROM inserted;
+END;
+GO
+</pre>
+
+<p>
+Trigger que se ejecuta automáticamente después de insertar un empleado, registrando la acción en la tabla de auditoría.
+</p>
+
+</div>
+
+<div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
+
+<h2>6. Inserción de datos de ejemplo</h2>
+
+<pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
+INSERT INTO empleados (nombre, puesto, salario)
+VALUES
+('Ana Pérez', 'Analista', 45000.00),
+('Luis Gómez', 'Desarrollador', 52000.00),
+('María López', 'Gerente', 75000.00),
+('Carlos Sánchez', 'Diseñador', 40000.00),
+('Lucía Fernández', 'Contadora', 47000.00),
+('Jorge Ramírez', 'Soporte Técnico', 38000.00),
+('Sandra Torres', 'Marketing', 42000.00),
+('Miguel Díaz', 'Ventas', 43000.00),
+('Patricia Herrera', 'Recursos Humanos', 46000.00),
+('Roberto Morales', 'Administración', 44000.00);
+GO
+</pre>
+
+<p>
+Inserta 10 empleados de ejemplo. Cada inserción activa el trigger automáticamente, generando registros en la tabla <code>auditoria_empleados</code>.
+</p>
+
+</div>
+
+<h2>Ejemplo</h2>
+
+![Imagem](BD.E.M.I.L.png)
+
+![imagen](BD.B.E.M.B.png)
 
