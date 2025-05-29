@@ -247,7 +247,7 @@ GO
 
 <div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
 
-<h2>3. Creación de la tabla <code>empleados</code></h2>
+<h2>2. Creación de la tabla <code>empleados</code></h2>
 
 <pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
 CREATE TABLE empleados (
@@ -268,7 +268,7 @@ Tabla que almacena datos de empleados con un ID autoincremental, nombre, puesto,
 
 <div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
 
-<h2>4. Creación de la tabla <code>auditoria_empleados</code></h2>
+<h2>3. Creación de la tabla <code>auditoria_empleados</code></h2>
 
 <pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
 CREATE TABLE auditoria_empleados (
@@ -289,7 +289,7 @@ Tabla que almacena los registros de auditoría de acciones realizadas sobre empl
 
 <div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
 
-<h2>5. Creación del trigger <code>trg_after_insert_empleado</code></h2>
+<h2>4. Creación del trigger <code>trg_after_insert_empleado</code></h2>
 
 <pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
 CREATE TRIGGER trg_after_insert_empleado
@@ -312,7 +312,7 @@ Trigger que se ejecuta automáticamente después de insertar un empleado, regist
 
 <div style="font-family:'Times New Roman', serif; line-height:1.5; text-align:justify;">
 
-<h2>6. Inserción de datos de ejemplo</h2>
+<h2>5. Inserción de datos de ejemplo</h2>
 
 <pre style="font-family:'Courier New', monospace; background-color:#f0f0f0; padding:10px; border-radius:5px;">
 INSERT INTO empleados (nombre, puesto, salario)
